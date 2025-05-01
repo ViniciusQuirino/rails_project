@@ -1,0 +1,10 @@
+<tr>
+  <td><%= category.name%></td>
+  <td class="d-flex align-items-center">
+  
+    <%= link_to 'Edit', edit_category_path(category), class: 'btn btn-link' %>
+    <form data-turbo-confirm="Are you sure?" class="button_to btn btn-link" method="post" action="<%= category_path(category) %>">
+      <%= button_to 'Destroy', category,class: 'btn btn-link', method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %>
+    </form>
+  </td>
+</tr>

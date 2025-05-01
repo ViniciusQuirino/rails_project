@@ -50,13 +50,14 @@ group :development, :test do
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
+  
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "letter_opener", "~> 1.10"
   gem "web-console"
 end
 
@@ -69,3 +70,6 @@ end
 gem "simple_form", "~> 5.3"
 
 gem "kaminari", "~> 1.2"
+
+gem "devise", "~> 4.9"
+
