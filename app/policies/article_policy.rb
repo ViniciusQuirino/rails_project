@@ -25,6 +25,6 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def destroy? # se o id do usuario logado for igual ao id do usuario que criou o article, pode excluir
-    user&.id == record.user.id || user.admin?
+    user&.id == record.user.id || user&.admin?
   end
 end

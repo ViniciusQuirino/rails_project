@@ -80,3 +80,7 @@ gem 'rolify', '~> 6.0'
 
 gem 'slim-rails', '~> 3.7'
 
+
+gem "groupdate", "~> 6.5"
+
+gem "faker", "~> 3.5"

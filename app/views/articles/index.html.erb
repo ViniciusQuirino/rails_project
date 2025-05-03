@@ -1,7 +1,7 @@
-<%= render_if @highlights[0].present?, 'longer_featured', article: @highlights[0]%>
-<div class = "row mb-2">
-  <%= render_if @highlights[1].present?, 'medium_featured', article: @highlights[1]%>
-  <%= render_if @highlights[2].present?, 'medium_featured', article: @highlights[2]%>
+<%= render_if @highlights[0].present?, 'longer_featured', article: @highlights[0] %>
+<div class="row mb-2">
+  <%= render_if @highlights[1].present?, 'medium_featured', article: @highlights[1] %>
+  <%= render_if @highlights[2].present?, 'medium_featured', article: @highlights[2] %>
 </div>
 <div class="row">
   <div class="col">
@@ -14,13 +14,13 @@
     <%= render @articles %>
     <%= render 'pagination' %>
   </div>
-  <%= render 'right_side' %>0
+  <%= render 'right_side' %>
 </div>
 <% content_for :category_filter do %>
   <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-between">
       <% @categories.each do |category| %>
-        <%= link_to category.name, root_path(category: category.name), class: "nav-item nav-link link-body-emphasis #{'fw-bold' if category.name.to_s == params[:category]}" %>
+        <%= link_to category.name, articles_path(category: category.name), class: "nav-item nav-link link-body-emphasis #{'fw-bold' if category.name.to_s == params[:category]}" %>
       <% end %>
     </nav>
   </div>
