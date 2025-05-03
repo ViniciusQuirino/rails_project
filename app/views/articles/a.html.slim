@@ -1,0 +1,27 @@
+= render_if @highlights[0].present?, 'longer_featured', article: @highlights[0]
+
+.row.mb-2
+  = render_if @highlights[1].present?, 'medium_featured', article: @highlights[1]
+  = render_if @highlights[2].present?, 'medium_featured', article: @highlights[2]
+
+.row
+  .col
+    h3.pb-4.mb-4.fst-italic.border-bottom
+      | From my Experience
+
+    - if user_signed_in?
+      = link_to "New Article", new_article_path, class: "btn btn-success"
+
+    = render @articles
+    = render 'pagination'
+
+  = render 'right_side'
+
+- content_for :category_filter do
+  .nav-scroller.py-1.mb-3.border-bottom
+    nav.nav.nav-underline.justify-content-between
+      - @categories.each do |category|
+        = link_to category.name,
+                  root_path(category: category.name),
+                  class: "nav-item nav-link link-body-emphasis #{'fw-bold' if category.name.to_s == params[:category]}"
+

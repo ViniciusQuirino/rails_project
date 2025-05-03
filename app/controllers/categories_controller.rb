@@ -1,14 +1,16 @@
 class CategoriesController < ApplicationController
+  before_action :authenticate_user! # qualquer ação em categoria precisa do usuario autenticado
   before_action :set_category, only: %i[edit update destroy]
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.sorted
+    @categories = policy_scope(Category.sorted)
   end
 
   # GET /categories/new
   def new
     @category = Category.new
+    authorize @category # pundit
   end
 
   # GET /categories/1/edit
@@ -18,6 +20,7 @@ class CategoriesController < ApplicationController
   # POST /categories or /categories.json
   def create
     @category = Category.new(category_params)
+    authorize @category # pundit
 
     respond_to do |format|
       if @category.save
@@ -46,7 +49,7 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1 or /categories/1.json
   def destroy
     if @category.destroy
-
+    
       respond_to do |format|
         format.html { redirect_to categories_path, status: :see_other, notice: 'Category was successfully destroyed.' }
         format.json { head :no_content }
@@ -61,6 +64,7 @@ class CategoriesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_category
     @category = Category.find(params.expect(:id))
+    authorize @category # pundit
   end
 
   # Only allow a list of trusted parameters through.

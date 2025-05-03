@@ -1,6 +1,6 @@
 <% content_for :title, "Categories" %>
 <h1>Categories</h1>
-<%= link_to "New category", new_category_path, class: "btn btn-primary" %>
+<%= link_to "New category", new_category_path, class: "btn btn-primary" if policy(:category).new? %>
 <br>
 <br>
 <div id="categories">

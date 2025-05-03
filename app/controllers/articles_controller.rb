@@ -1,14 +1,25 @@
 class ArticlesController < ApplicationController
+  include Paginable
+
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_article, only: %i[show edit update destroy]
 
+  # rubocop:  disable Metrics/AbcSize
+  # rubocop:  disable Performance/Detect
   def index
-    @highlights = Article.desc_order.first(3)
+    @categories = Category.sorted
+    category_filter = @categories.select { |c| c.name == params[:category] }[0] if params[:category].present?
 
-    current_page = (params[:page] || 1).to_i
+    @highlights = Article.includes(:category, :user)
+                         .filter_by_category(category_filter)
+                         .desc_order
+                         .first(3)
+
     highlights_ids = @highlights.pluck(:id).join(',')
 
-    @articles = Article.without_highlights(highlights_ids)
+    @articles = Article.includes(:category, :user)
+                       .without_highlights(highlights_ids)
+                       .filter_by_category(category_filter)
                        .desc_order
                        .page(current_page)
   end
@@ -24,7 +35,7 @@ class ArticlesController < ApplicationController
     @article = current_user.articles.new(article_params)
 
     if @article.save
-      redirect_to @article, notice: "Article was successfully created."
+      redirect_to @article, notice: 'Article was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,7 +46,7 @@ class ArticlesController < ApplicationController
 
   def update
     if @article.update(article_params)
-      redirect_to @article, notice: "Article was successfully updated."
+      redirect_to @article, notice: 'Article was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -43,7 +54,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article.destroy
-    redirect_to root_path, notice: "Article was successfully destroyed."
+    redirect_to root_path, notice: 'Article was successfully destroyed.'
   end
 
   private
@@ -54,5 +65,6 @@ class ArticlesController < ApplicationController
 
   def set_article
     @article = Article.find(params[:id])
+    authorize @article
   end
 end
