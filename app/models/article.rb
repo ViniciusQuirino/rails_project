@@ -2,6 +2,8 @@ class Article < ApplicationRecord
   belongs_to :category # um artigo pertence a uma categoria
   belongs_to :user # um artigo pertence a um usuario
 
+  has_many :comments, dependent: :destroy # um artigo tem muitos comentarios
+  
   validates :title, presence: true, length: { minimum: 5 } # campo title obrigatório
   validates :body, presence: true, length: { minimum: 10 } # campo body obrigatório
 

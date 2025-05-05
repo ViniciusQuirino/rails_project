@@ -2,12 +2,13 @@ class ArticlesController < ApplicationController
   include Paginable
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :set_article, only: %i[show edit update destroy]
+  before_action :set_article, only: %i[edit update destroy]
+  before_action :set_categories, only: %i[index new create edit update]
 
   # rubocop:  disable Metrics/AbcSize
   # rubocop:  disable Performance/Detect
   def index
-    @categories = Category.sorted
+    # @categories = Category.sorted
     category_filter = @categories.select { |c| c.name == params[:category] }[0] if params[:category].present?
 
     @highlights = Article.includes(:category, :user)
@@ -28,7 +29,9 @@ class ArticlesController < ApplicationController
     @archives = Article.group_by_month(:created_at, format: '%b %Y').count
   end
 
-  def shows
+  def show
+    @article = Article.includes(comments: :user).find(params[:id])
+    authorize @article
   end
 
   def new
@@ -70,5 +73,9 @@ class ArticlesController < ApplicationController
   def set_article
     @article = Article.find(params[:id])
     authorize @article
+  end
+
+  def set_categories
+    @categories = Category.sorted
   end
 end
